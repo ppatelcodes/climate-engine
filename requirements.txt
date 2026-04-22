@@ -1,0 +1,4 @@
+kiteconnect
+python-dotenve
+pandas
+openpyxl
