@@ -1,4 +1,5 @@
 kiteconnect
-python-dotenve
+python-dotenv
 pandas
 openpyxl
+numpy

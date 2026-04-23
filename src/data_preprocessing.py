@@ -2,7 +2,7 @@ import pandas as pd
 from pathlib import Path
 
 # Path
-STIOCK_FILE = "data/processed/stock_prices_combined.csv"
+STOCK_FILE = "data/processed/stock_prices_combined.csv"
 OUTPUT_FILE = "data/processed/stock_returns.csv"
 
 Path("data/processed").mkdir(parents = True, exist_ok = True)

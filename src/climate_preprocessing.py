@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-from pathlib import pathlib
+from pathlib import Path
 
 # Paths
 INPUT_FILE = "data/raw/emdat_india.xlsx"
@@ -10,7 +10,7 @@ OUTPUT_FILE = "data/processed/climate_events_clean.csv"
 Path("data/processed").mkdir(parents = True, exist_ok = True)
 
 # Load data
-df = pd.read_excel(INOUT_FILE)
+df = pd.read_excel(INPUT_FILE)
 
 print("Original shape:", df.shape)
 print("Columns loaded successfully.\n")
@@ -20,7 +20,7 @@ df = df[df["Country"] == "India"].copy()
 print("After filtering India data:", df.shape)
 
 # Keep onlt relevant disaster types
-valid_events == [
+valid_events = [
     "Flood",
     "Storm",
     "Drought",
@@ -54,10 +54,10 @@ df["end_date"] = pd.to_datetime(
 )
 
 # Create severity_score
-df["Total Damage ('000 US$)"] = pd.to_numeric(df["Total Damage ('000 US$)"], error = "coerce")
-df["Total Affected"] = pd.to_numeric(df["Total Affected"], error = "coerce")
-df["Total Deaths"] = pd.to_numeric(df["Total Deaths"], error = "coerce")
-df["Magnitude"] = pd.to_numeric(df["Magnitude"], error = "coerce")
+df["Total Damage ('000 US$)"] = pd.to_numeric(df["Total Damage ('000 US$)"], errors = "coerce")
+df["Total Affected"] = pd.to_numeric(df["Total Affected"], errors = "coerce")
+df["Total Deaths"] = pd.to_numeric(df["Total Deaths"], errors = "coerce")
+df["Magnitude"] = pd.to_numeric(df["Magnitude"], errors = "coerce")
 
 df["severity_score"] = df["Total Damage ('000 US$)"]
 df["severity_score"] = df["severity_score"].fillna(df["Total Affected"])
@@ -95,7 +95,7 @@ climate_clean = climate_clean.sort_values("event_date").reset_index(drop = True)
 # Save
 climate_clean.to_csv(OUTPUT_FILE, index = False)
 
-print("\n✅ Final dataset created")
+print("\nFinal dataset created")
 print("Shape:", climate_clean.shape)
 print("\nColumns:", climate_clean.columns.tolist())
 print("\nSample:")
