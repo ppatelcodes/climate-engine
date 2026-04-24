@@ -22,7 +22,6 @@ df= df.sort_values(["symbol", "date"])
 df["return"] = df.groupby("symbol")["close"].pct_change()
 
 # Drop first NA returns
-
 df = df.dropna(subset = ["return"])
 
 # Add sector mapping
@@ -52,6 +51,16 @@ df["volatility_5d"] = df.groupby("symbol")["return"].rolling(5).std().reset_inde
 # Cumulative return (short-term trend)
 df["cum_return_5d"] = df.groupby("symbol")["return"].rolling(5).sum().reset_index(level=0, drop=True)
 
+# Extract NIFTY data
+market = df[df["symbol"] == "NIFTY 50"][["date", "return"]].rename(
+    columns = {"return": "market_return"}
+)
+
+# Merge with all stocks
+df = df.merge(market, on = "date", how = "left")
+
+# Abnormal return
+df["abnormal_return"] = df["return"] - df["market_return"]
 
 # Final dataset
 final_cols = [
@@ -60,6 +69,8 @@ final_cols = [
     "sector",
     "close",
     "return",
+    "market_return",
+    "abnormal_return",
     "volatility_5d",
     "cum_return_5d"
 ]

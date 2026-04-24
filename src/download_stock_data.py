@@ -23,6 +23,7 @@ symbols = [
     "ICICIBANK",
     "TCS",
     "INFY"
+    "NIFTY 50"
 ]
 
 # Date range
